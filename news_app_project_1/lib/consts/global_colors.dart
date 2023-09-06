@@ -11,5 +11,5 @@ import 'package:flutter/material.dart';
    Color darkScaffoldColor = const Color(0xFF1A1A2E);
    Color darkCardColor = const Color(0xFF001429);
    Color darkBackgroundColor = const Color(0xFF0F3460);
-   Color darkIconsColor = const Color.fromARGB(255, 63, 13, 21);
+   Color darkIconsColor = const Color.fromARGB(255, 151, 13, 36);
 

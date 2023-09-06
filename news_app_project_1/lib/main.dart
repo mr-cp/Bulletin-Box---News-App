@@ -33,23 +33,23 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // bool isDarkTheme = false;
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) {
-              return themeChangeProvider;
-            },
-          )
-        ],
-        child: Consumer<DarkThemeProvider>(
-          builder: (builder, themeProvider, child) {
-            
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'News App',
-              theme: Styles.themeData(themeProvider.getDarkTheme,context),
-              home: const HomeScreen(),
-            );
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) {
+            return themeChangeProvider;
           },
-        ));
+        )
+      ],
+      child: Consumer<DarkThemeProvider>(
+        builder: (builder, themeProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'News App',
+            theme: Styles.themeData(themeProvider.getDarkTheme, context),
+            home: const HomeScreen(),
+          );
+        },
+      ),
+    );
   }
 }

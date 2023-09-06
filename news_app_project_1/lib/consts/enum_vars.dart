@@ -1,0 +1,4 @@
+enum GenreTabs {
+  allNews,
+  topTrending,
+}
