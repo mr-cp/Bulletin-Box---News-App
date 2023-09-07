@@ -14,10 +14,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var newsTabsRef = NewsTabType.allNews;
   @override
   Widget build(BuildContext context) {
-    var newsTabs = GenreTabs.allNews;
-
     final Color color = Utils(context).getColor;
     return Scaffold(
       appBar: AppBar(
@@ -45,48 +44,116 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: const DrawerWidget(),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
+      body: Padding(
+        padding: const EdgeInsets.all(17.0),
+        child: Column(
+          children: [
+            Row(
               children: [
-                // GenreSelector(
-                //   title: 'All News',
-                //   color: newsTabs == GenreTabs.allNews
-                //       ? Theme.of(context).cardColor
-                //       : Colors.transparent,
-                //   fontsize: newsTabs == GenreTabs.allNews ? 22 : 12,
-                //   func: () {
-                //     if (newsTabs == GenreTabs.allNews) {
-                //       return;
-                //     }
-                   
-                //   },
-                // ),
-                // const SizedBox(width: 10),
-                // GenreSelector(
-                //   title: 'Top Trending',
-                //   color: newsTabs == GenreTabs.topTrending
-                //       ? Theme.of(context).cardColor
-                //       : Colors.transparent,
-                //   fontsize: newsTabs == GenreTabs.topTrending ? 22 : 12,
-                //   func: () {
-                //     if (newsTabs == GenreTabs.topTrending) {
-                //       return;
-                //     }
-                //     setState(
-                //       () {
-                //         newsTabs = GenreTabs.topTrending;
-                //       },
-                //     );
-                //   },
-                // ),
+                NewsTabsWidget(
+                  title: 'All News',
+                  color: newsTabsRef == NewsTabType.allNews
+                      ? Theme.of(context).cardColor
+                      : Colors.transparent,
+                  fontsize: newsTabsRef == NewsTabType.allNews ? 20 : 18,
+                  func: () {
+                    if (newsTabsRef == NewsTabType.allNews) {
+                      return;
+                    }
+                    setState(() {
+                      newsTabsRef = NewsTabType.allNews;
+                    });
+                  },
+                ),
+                const SizedBox(width: 15),
+                NewsTabsWidget(
+                  title: 'Top Trending',
+                  color: newsTabsRef == NewsTabType.topTrending
+                      ? Theme.of(context).cardColor
+                      : Colors.transparent,
+                  fontsize: newsTabsRef == NewsTabType.topTrending ? 20 : 18,
+                  func: () {
+                    if (newsTabsRef == NewsTabType.topTrending) {
+                      return;
+                    }
+                    setState(
+                      () {
+                        newsTabsRef = NewsTabType.topTrending;
+                      },
+                    );
+                  },
+                ),
               ],
             ),
-          )
-        ],
+            const SizedBox(height: 15),
+            newsTabsRef == NewsTabType.topTrending
+                ? Container()
+                : SizedBox(
+                    height: kBottomNavigationBarHeight,
+                    // color: Colors.red,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PaginationButton(title: 'Prev', function: () {}),
+                        Flexible(
+                          flex: 2,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                  child: Container(
+                                      color: Theme.of(context).cardColor,
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Center(child: Text('1')),
+                                      )),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        PaginationButton(title: 'Next', function: () {})
+                      ],
+                    ),
+                  )
+          ],
+        ),
       ),
     );
   }
+
+  Widget PaginationButton({required Function function, required String title}) {
+    return ElevatedButton(
+        onPressed: () {
+          function() {}
+        },
+        child: Text(title));
+  }
 }
+
+/* Flexible(
+                          flex: 2,
+                          child: Container(
+                            color:Colors.amber,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      child: Container(
+                                        color: Colors.blueGrey,
+                                        child: const Center(
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Text('1'),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),*/ 

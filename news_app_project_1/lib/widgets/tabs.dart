@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GenreSelector extends StatelessWidget {
-  const GenreSelector({
+class NewsTabsWidget extends StatelessWidget {
+  const NewsTabsWidget({
     super.key,
     required this.title,
     required this.func,
@@ -16,15 +16,21 @@ class GenreSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: func() ,
+      onTap: () {
+        func();
+      },
       child: Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15), color: color),
+            borderRadius: BorderRadius.circular(5), color: color),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
             title,
-            style: TextStyle(fontSize: fontsize),
+            style: TextStyle(
+              fontSize: fontsize,
+              fontWeight: FontWeight.w300,
+              letterSpacing: .5,
+            ),
           ),
         ),
       ),

@@ -1,4 +1,4 @@
-enum GenreTabs {
+enum NewsTabType {
   allNews,
   topTrending,
 }
