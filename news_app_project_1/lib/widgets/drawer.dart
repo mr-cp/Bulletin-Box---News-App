@@ -14,6 +14,7 @@ class DrawerWidget extends StatefulWidget {
 class _DrawerWidgetState extends State<DrawerWidget> {
   @override
   Widget build(BuildContext context) {
+    print('drawer working');
     final themeState = Provider.of<DarkThemeProvider>(context);
     
     return Drawer(
@@ -46,9 +47,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   const Text(
                     'Explore the Newsiverse',
                     style: TextStyle(
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w100,
                       fontSize: 15,
-                      fontStyle: FontStyle.italic,
+                       letterSpacing: 3.5,
+                      // fontStyle: FontStyle.italic,
                     ),
                   ),
                 ])

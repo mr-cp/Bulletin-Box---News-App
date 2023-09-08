@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/widgets/loading_shimmer_widget.dart';
 
 import '../services/utils.dart';
 import '../widgets/drawer.dart';
@@ -15,9 +16,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var newsTabsRef = NewsTabType.allNews;
+  int currentPageIndex = 0;
+
+  String sortBy = SortByEnum.publishedAt.name;
+
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: color),
@@ -94,66 +100,122 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        PaginationButton(title: 'Prev', function: () {}),
+                        paginationButton(
+                          title: 'Prev',
+                          function: () {
+                            if (currentPageIndex == 0) {
+                              return;
+                            }
+                            setState(() {
+                              currentPageIndex -= 1;
+                            });
+                          },
+                        ),
                         Flexible(
                           flex: 2,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
+                            itemCount: 6,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: InkWell(
-                                  child: Container(
-                                      color: Theme.of(context).cardColor,
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Center(child: Text('1')),
-                                      )),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(6),
+                                  color: currentPageIndex == index
+                                      ? Colors.white12
+                                      : Theme.of(context).cardColor,
+                                  child: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        currentPageIndex = index;
+                                      });
+                                    },
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(14.0),
+                                        child: Text('${index + 1}'),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               );
                             },
                           ),
                         ),
-                        PaginationButton(title: 'Next', function: () {})
+                        paginationButton(
+                          title: 'Next',
+                          function: () {
+                            if (currentPageIndex == 5) {
+                              return;
+                            }
+                            setState(() {
+                              currentPageIndex += 1;
+                            });
+                          },
+                        )
                       ],
                     ),
-                  )
+                  ),
+            newsTabsRef == NewsTabType.topTrending
+                ? Container()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Material(
+                        color: Theme.of(context).cardColor,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: DropdownButton(
+                            value: sortBy,
+                            items: dropDownItem,
+                            onChanged: (String? value) {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            const SizedBox(height: 10),
+          const LoadingWidget(),
           ],
         ),
       ),
     );
   }
 
-  Widget PaginationButton({required Function function, required String title}) {
+//  Drop Down Menu Items:
+  List<DropdownMenuItem<String>> get dropDownItem {
+    List<DropdownMenuItem<String>> menuItem = [
+      DropdownMenuItem(
+        value: SortByEnum.relevency.name,
+        child: Text(
+          SortByEnum.relevency.name,
+        ),
+      ),
+      DropdownMenuItem(
+        value: SortByEnum.publishedAt.name,
+        child: Text(
+          SortByEnum.publishedAt.name,
+        ),
+      ),
+      DropdownMenuItem(
+        value: SortByEnum.popularity.name,
+        child: Text(
+          SortByEnum.popularity.name,
+        ),
+      )
+    ];
+    return menuItem;
+  }
+
+// Pagination Widget:
+
+  Widget paginationButton({required Function function, required String title}) {
     return ElevatedButton(
-        onPressed: () {
-          function() {}
-        },
-        child: Text(title));
+      onPressed: () {
+        function();
+      },
+      child: Text(title),
+    );
   }
 }
-
-/* Flexible(
-                          flex: 2,
-                          child: Container(
-                            color:Colors.amber,
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      child: Container(
-                                        color: Colors.blueGrey,
-                                        child: const Center(
-                                          child: Padding(
-                                            padding: EdgeInsets.all(10),
-                                            child: Text('1'),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),*/ 
