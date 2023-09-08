@@ -1,11 +1,15 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app_project_1/consts/enum_vars.dart';
 import 'package:news_app_project_1/services/utils.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingWidget extends StatefulWidget {
   const LoadingWidget({
     super.key,
+    required this.newsTabsRef,
   });
+  final NewsTabType newsTabsRef;
 
   @override
   State<LoadingWidget> createState() => _LoadingWidgetState();
@@ -27,21 +31,112 @@ class _LoadingWidgetState extends State<LoadingWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
-    return Expanded(
-      child: ListView.builder(
-        itemCount: 20,
-        itemBuilder: (ctx, index) {
-          return ArticleShimmerEffect(
-              baseShimmerColor: baseShimmerColor,
-              highLightShimmerColor: highLightShimmerColor,
-              widgetShimmerColor: widgetShimmerColor,
-              size: size,
-              borderRadius: borderRadius);
-        },
+    return widget.newsTabsRef == NewsTabType.topTrending
+        ? Swiper(
+            itemWidth: size.width * .85,
+            layout: SwiperLayout.STACK,
+            viewportFraction: 0.9,
+            itemCount: 10,
+            itemBuilder: (context, index) {
+              return TopTrendingLoadingWidget(
+                  baseShimmerColor: baseShimmerColor,
+                  highLightShimmerColor: highLightShimmerColor,
+                  size: size,
+                  widgetShimmerColor: widgetShimmerColor,
+                  borderRadius: borderRadius);
+            },
+          )
+        : Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: 20,
+              itemBuilder: (ctx, index) {
+                return ArticleShimmerEffect(
+                    baseShimmerColor: baseShimmerColor,
+                    highLightShimmerColor: highLightShimmerColor,
+                    widgetShimmerColor: widgetShimmerColor,
+                    size: size,
+                    borderRadius: borderRadius);
+              },
+            ),
+          );
+  }
+}
+
+// loading shimmer effect for top trending:
+
+class TopTrendingLoadingWidget extends StatelessWidget {
+  const TopTrendingLoadingWidget({
+    super.key,
+    required this.baseShimmerColor,
+    required this.highLightShimmerColor,
+    required this.size,
+    required this.widgetShimmerColor,
+    required this.borderRadius,
+  });
+
+  final Color baseShimmerColor;
+  final Color highLightShimmerColor;
+  final Size size;
+  final Color widgetShimmerColor;
+  final BorderRadius borderRadius;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+        ),
+        child: Shimmer.fromColors(
+          baseColor: baseShimmerColor,
+          highlightColor: highLightShimmerColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  height: size.height * 0.33,
+                  width: double.infinity,
+                  color: widgetShimmerColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Container(
+                  width: double.infinity,
+                  height: size.height * 0.06,
+                  decoration: BoxDecoration(
+                      borderRadius: borderRadius, color: widgetShimmerColor),
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: size.height * 0.025,
+                    width: size.width * .24,
+                    decoration: BoxDecoration(
+                      borderRadius: borderRadius,
+                      color: widgetShimmerColor,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 }
+
+// article loading widgets code:
 
 class ArticleShimmerEffect extends StatelessWidget {
   const ArticleShimmerEffect({

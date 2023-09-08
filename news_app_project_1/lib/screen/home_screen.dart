@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
-import 'package:news_app_project_1/widgets/loading_shimmer_widget.dart';
 
 import '../services/utils.dart';
+import '../widgets/article_widget.dart';
 import '../widgets/drawer.dart';
+import '../widgets/loading_shimmer.dart';
 import '../widgets/tabs.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
+    final size = Utils(context).getScreenSize;
 
     return Scaffold(
       appBar: AppBar(
@@ -175,8 +177,30 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-            const SizedBox(height: 10),
-          const LoadingWidget(),
+            const SizedBox(height: 6),
+            if (newsTabsRef == NewsTabType.allNews)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 20,
+                  itemBuilder: (ctx, index) {
+                    return const CardListWidget();
+                  },
+                ),
+              ),
+            if (newsTabsRef == NewsTabType.topTrending)
+              SizedBox(
+                height: size.height * .55,
+                child:  LoadingWidget( newsTabsRef: newsTabsRef,),
+                // Swiper(
+                //   itemWidth: size.width*.85,
+                //   layout: SwiperLayout.STACK,
+                //   viewportFraction: 0.9,
+                //   itemCount: 10,
+                //   itemBuilder: (context, index) {
+                //     return const TopTrendingWidget();
+                //   },
+                // ),
+              ),
           ],
         ),
       ),
