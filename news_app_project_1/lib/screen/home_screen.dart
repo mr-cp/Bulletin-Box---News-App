@@ -1,12 +1,16 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:page_transition/page_transition.dart';
 
+import '../inner_screen/search_screen.dart';
 import '../services/utils.dart';
 import '../widgets/article_widget.dart';
 import '../widgets/drawer.dart';
-import '../widgets/loading_shimmer.dart';
 import '../widgets/tabs.dart';
+import '../widgets/top_trending.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,9 +48,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageTransition(
+                    type: PageTransitionType.rightToLeftWithFade,
+                    duration: const Duration(
+                      milliseconds: 450,
+                    ),
+                    child: const SearchScreen(),
+                    inheritTheme: true,
+                    ctx: context),
+              );
+            },
             icon: const Icon(
-              Icons.search_rounded,
+              IconlyBroken.search,
             ),
           )
         ],
@@ -128,9 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       : Theme.of(context).cardColor,
                                   child: InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        currentPageIndex = index;
-                                      });
+                                      setState(
+                                        () {
+                                          currentPageIndex = index;
+                                        },
+                                      );
                                     },
                                     child: Center(
                                       child: Padding(
@@ -190,17 +208,17 @@ class _HomeScreenState extends State<HomeScreen> {
             if (newsTabsRef == NewsTabType.topTrending)
               SizedBox(
                 height: size.height * .55,
-                child:  LoadingWidget( newsTabsRef: newsTabsRef,),
-                // Swiper(
-                //   itemWidth: size.width*.85,
-                //   layout: SwiperLayout.STACK,
-                //   viewportFraction: 0.9,
-                //   itemCount: 10,
-                //   itemBuilder: (context, index) {
-                //     return const TopTrendingWidget();
-                //   },
-                // ),
+                child: Swiper(
+                  itemWidth: size.width * .85,
+                  layout: SwiperLayout.STACK,
+                  viewportFraction: 0.9,
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return const TopTrendingWidget();
+                  },
+                ),
               ),
+            // LoadingWidget( newsTabsRef: newsTabsRef,),
           ],
         ),
       ),

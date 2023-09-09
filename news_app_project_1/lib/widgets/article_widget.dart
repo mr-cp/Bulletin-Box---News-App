@@ -12,7 +12,7 @@ class CardListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      padding: const EdgeInsets.symmetric(vertical: 15.0),
       child: Material(
         color: Theme.of(context).cardColor,
         child: InkWell(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_app_project_1/inner_screen/bookmark_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dark_theme_provider.dart';
@@ -64,7 +66,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             ListTilesWidget(
               label: 'Bookmark',
-              func: () {},
+              func: () {
+                Navigator.push(
+                context,
+                PageTransition(
+                    type: PageTransitionType.leftToRightWithFade,
+                    duration: const Duration(
+                      milliseconds: 450,
+                    ),
+                    child: const BookmarkScreen(),
+                    inheritTheme: true,
+                    ctx: context),
+              );
+              },
               icon: Icons.bookmark,
             ),
             const Divider(),
@@ -86,6 +100,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 });
               },
             ),
+          
           ],
         ),
       ),

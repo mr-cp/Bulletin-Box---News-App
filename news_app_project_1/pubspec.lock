@@ -142,6 +142,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  flutter_iconly:
+    dependency: "direct main"
+    description:
+      name: flutter_iconly
+      sha256: fabcbd59d93666aed6b0f7b4285776686cf60d07447d4afbffee92635d5ed785
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -150,6 +158,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_staggered_grid_view:
+    dependency: "direct main"
+    description:
+      name: flutter_staggered_grid_view
+      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -232,6 +248,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  page_transition:
+    dependency: "direct main"
+    description:
+      name: page_transition
+      sha256: a7694bc120b7064a7f57c336914bb8885acf4f70bb3772c30c2fcfe6a85e43ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.9"
   path:
     dependency: transitive
     description:
