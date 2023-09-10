@@ -3,7 +3,6 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
 
-import '../services/utils.dart';
 import '../widgets/empty_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -45,6 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
           body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
+              // mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [

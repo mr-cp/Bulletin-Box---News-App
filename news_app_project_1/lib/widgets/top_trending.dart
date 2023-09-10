@@ -9,13 +9,12 @@ class TopTrendingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = Utils(context).getScreenSize;
-    final Color color = Utils(context).getColor;
     final Color colorText = Utils(context).getColorText;
 
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Material(
-        color: color,
+        color: Colors.grey,
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
           onTap: () {},
@@ -49,9 +48,9 @@ class TopTrendingWidget extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon:  Icon(
                         Icons.link,
-                        color: Colors.blue,
+                        color: Colors.blue.shade300,size: 30,
                       ),
                     ),
                     const Spacer(),

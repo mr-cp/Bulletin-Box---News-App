@@ -1,7 +1,9 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/inner_screen/news_detail_web_view.dart';
 import 'package:news_app_project_1/services/utils.dart';
+import 'package:page_transition/page_transition.dart';
 
 class CardListWidget extends StatelessWidget {
   const CardListWidget({
@@ -76,7 +78,8 @@ class CardListWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'title ' * 30,textAlign: TextAlign.justify,
+                              'title ' * 30,
+                              textAlign: TextAlign.justify,
                               maxLines: 3,
                               style: smallTextStyle,
                               overflow: TextOverflow.ellipsis,
@@ -97,11 +100,31 @@ class CardListWidget extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) =>
+                                      //         const NewsDetailsWebView(),
+                                      //   ),
+                                      // );
+                                      Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            type: PageTransitionType
+                                                .leftToRightWithFade,
+                                            duration: const Duration(
+                                              milliseconds: 450,
+                                            ),
+                                            child: const NewsDetailsWebView(),
+                                            inheritTheme: true,
+                                            ctx: context),
+                                      );
+                                    },
                                     icon: const Icon(Icons.link),
                                     color: Colors.blueAccent,
                                   ),
-                                    Text(
+                                  Text(
                                     '25/08/2023,  10:31 PM',
                                     style: smallTextStyle,
                                     maxLines: 1,
