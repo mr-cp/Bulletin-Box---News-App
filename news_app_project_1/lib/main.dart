@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const HomeScreen(),
             routes: {
-              NewsDetailScreen.routeName: (ctx) => const NewsDetailScreen(),
+              NewsDetailScreen.routeName: (ctx) =>  const NewsDetailScreen(heroTag: 'anime',),
             },
           );
         },

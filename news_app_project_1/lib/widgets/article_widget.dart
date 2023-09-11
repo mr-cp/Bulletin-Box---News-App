@@ -20,6 +20,17 @@ class CardListWidget extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.pushNamed(context, '/NewsDetailScreen');
+
+            // Navigator.push(
+            //   context,
+            //   PageTransition(
+            //     type: PageTransitionType.fade,
+            //     duration: const Duration(milliseconds: 450),
+            //     child: const NewsDetailScreen(heroTag:'anime' ,),
+            //     inheritTheme: true,
+            //     ctx: context,
+            //   ),
+            // );
           },
           child: Stack(
             children: [
@@ -67,7 +78,9 @@ class CardListWidget extends StatelessWidget {
                         height: size.height * .10,
                         width: size.width * .20,
                         boxFit: BoxFit.fill,
-                        errorWidget: Image.asset('assets/empty_image.png'),
+                        errorWidget: Hero(
+                          tag: Key('anime${UniqueKey().toString()}'),
+                          child: Image.asset('assets/empty_image.png')),
                         imageUrl:
                             "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                       ),
