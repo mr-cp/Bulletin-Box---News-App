@@ -18,7 +18,9 @@ class CardListWidget extends StatelessWidget {
       child: Material(
         color: Theme.of(context).cardColor,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, '/NewsDetailScreen');
+          },
           child: Stack(
             children: [
               Container(
@@ -65,6 +67,7 @@ class CardListWidget extends StatelessWidget {
                         height: size.height * .10,
                         width: size.width * .20,
                         boxFit: BoxFit.fill,
+                        errorWidget: Image.asset('assets/empty_image.png'),
                         imageUrl:
                             "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                       ),

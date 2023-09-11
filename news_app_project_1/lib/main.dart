@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_project_1/consts/theme_data.dart';
+import 'package:news_app_project_1/inner_screen/blog_details.dart';
 import 'package:news_app_project_1/provider/dark_theme_provider.dart';
 import 'package:news_app_project_1/screen/home_screen.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +48,9 @@ class _MyAppState extends State<MyApp> {
             title: 'News App',
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const HomeScreen(),
+            routes: {
+              NewsDetailScreen.routeName: (ctx) => const NewsDetailScreen(),
+            },
           );
         },
       ),

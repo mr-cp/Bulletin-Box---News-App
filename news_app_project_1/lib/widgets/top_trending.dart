@@ -2,6 +2,9 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/services/utils.dart';
+import 'package:page_transition/page_transition.dart';
+
+import '../inner_screen/news_detail_web_view.dart';
 
 class TopTrendingWidget extends StatelessWidget {
   const TopTrendingWidget({super.key});
@@ -47,10 +50,23 @@ class TopTrendingWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
-                      icon:  Icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.leftToRightWithFade,
+                              duration: const Duration(
+                                milliseconds: 450,
+                              ),
+                              child: const NewsDetailsWebView(),
+                              inheritTheme: true,
+                              ctx: context),
+                        );
+                      },
+                      icon: Icon(
                         Icons.link,
-                        color: Colors.blue.shade300,size: 30,
+                        color: Colors.blue.shade300,
+                        size: 30,
                       ),
                     ),
                     const Spacer(),
