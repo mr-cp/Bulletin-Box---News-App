@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   
   # UI:
-  google_fonts: ^5.1.0
+  google_fonts: 5.1.0
   fancy_shimmer_image: ^2.0.3
   shimmer: ^3.0.0
   card_swiper: ^3.0.1
@@ -51,6 +51,8 @@ dependencies:
   # social
   share_plus: ^7.1.0
   url_launcher: ^6.1.14
+  # API
+  http: ^1.1.0
   
 dev_dependencies:
   flutter_test:

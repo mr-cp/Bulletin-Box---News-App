@@ -5,11 +5,12 @@ import 'package:news_app_project_1/inner_screen/news_detail_web_view.dart';
 import 'package:news_app_project_1/services/utils.dart';
 import 'package:page_transition/page_transition.dart';
 
-class CardListWidget extends StatelessWidget {
-  const CardListWidget({
+class ArticlesWidget extends StatelessWidget {
+  const ArticlesWidget({
     super.key,
+    required this.imageUrl,
   });
-
+  final String imageUrl;
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
@@ -78,11 +79,9 @@ class CardListWidget extends StatelessWidget {
                         height: size.height * .10,
                         width: size.width * .20,
                         boxFit: BoxFit.fill,
-                        errorWidget: Hero(
-                          tag: Key('anime${UniqueKey().toString()}'),
-                          child: Image.asset('assets/empty_image.png')),
-                        imageUrl:
-                            "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                        errorWidget: Image.asset('assets/empty_image.png'),
+                        imageUrl: imageUrl,
+                        //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                       ),
                     ),
                     // const SizedBox(width: 10),

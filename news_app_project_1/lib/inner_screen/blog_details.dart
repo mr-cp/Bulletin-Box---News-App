@@ -6,9 +6,9 @@ import 'package:news_app_project_1/consts/enum_vars.dart';
 import 'package:news_app_project_1/services/utils.dart';
 
 class NewsDetailScreen extends StatefulWidget {
-  final String heroTag;
+  
   static const routeName = "/NewsDetailScreen";
-  const NewsDetailScreen({super.key, required this.heroTag});
+  const NewsDetailScreen({super.key});
 
   @override
   State<NewsDetailScreen> createState() => _NewsDetailScreenState();
@@ -65,9 +65,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   padding: const EdgeInsets.only(bottom: 25),
                   child: FancyShimmerImage(
                     boxFit: BoxFit.fill,
-                    errorWidget: Hero(
-                        tag: widget.heroTag,
-                        child: Image.asset('assets/empty_image.png')),
+                    errorWidget: Image.asset('assets/empty_image.png'),
                     imageUrl:
                         "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                   ),

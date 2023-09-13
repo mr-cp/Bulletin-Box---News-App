@@ -6,6 +6,7 @@ import 'package:news_app_project_1/screen/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  
   runApp(const MyApp());
 }
 
@@ -49,7 +50,7 @@ class _MyAppState extends State<MyApp> {
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const HomeScreen(),
             routes: {
-              NewsDetailScreen.routeName: (ctx) =>  const NewsDetailScreen(heroTag: 'anime',),
+              NewsDetailScreen.routeName: (ctx) =>  const NewsDetailScreen(),
             },
           );
         },
@@ -57,3 +58,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+
+

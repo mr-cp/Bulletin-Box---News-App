@@ -1,43 +1,43 @@
 class NewsModel {
-  String source,
-      newsId,
+  String newsId,
       sourceName,
-      author,
+      authorName,
       title,
       description,
       url,
       urlToImage,
       publishedAt,
+      dateToShow,
       content,
       readingTimeText;
 
   NewsModel({
-    required this.source,
     required this.newsId,
     required this.sourceName,
-    required this.author,
+    required this.authorName,
     required this.title,
     required this.description,
-    required this.content,
     required this.url,
     required this.urlToImage,
     required this.publishedAt,
+    required this.content,
+    required this.dateToShow,
     required this.readingTimeText,
   });
 
   factory NewsModel.fromJson(dynamic json) {
     return NewsModel(
-      source: json['source'] ?? "",
-      newsId: json['source']['id'] ?? "",
-      sourceName: json['source']['name'] ?? "",
-      author: json['author'] ?? "",
-      content: json['content'] ?? "",
-      description: json['description'] ?? "",
-      title: json['title'] ?? "",
-      url: json['url'] ?? "",
-      urlToImage: json['urlToImage'] ?? "",
-      publishedAt: json['publishedAt'] ?? "",
-      readingTimeText: json['readingTimeText'] ?? "",
+      newsId: json["source"]["id"] ?? "",
+      sourceName: json["source"]["name"] ?? "",
+      authorName: json["author"] ?? "",
+      title: json["title"] ?? "",
+      description: json["description"] ?? "",
+      url: json["url"] ?? "",
+      urlToImage: json["urlToImage"] ?? "",
+      publishedAt: json["publishedAt"] ?? "",
+      content: json["content"] ?? "",
+      dateToShow: "dateToShow",
+      readingTimeText: "readingTimeText",
     );
   }
 
@@ -49,18 +49,17 @@ class NewsModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
-    data['id'] = newsId;
-    data['id'] = sourceName;
-    data['id'] = author;
-    data['id'] = title;
-    data['id'] = url;
-    data['id'] = source;
-    data['id'] = description;
-    data['id'] = urlToImage;
-    data['id'] = content;
-    data['id'] = publishedAt;
-    data['id'] = readingTimeText;
-
+    data["NewsId"] = newsId;
+    data["sourceName"] = sourceName;
+    data["authorName"] = authorName;
+    data["title"] = title;
+    data["description"] = description;
+    data["url"] = url;
+    data["urlToImage"] = urlToImage;
+    data["publishedAt"] = publishedAt;
+    data["dateToShow"] = dateToShow;
+    data["content"] = content;
+    data["readingTimeText"] = readingTimeText;
     return data;
   }
 }

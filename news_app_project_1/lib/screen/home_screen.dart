@@ -1,14 +1,21 @@
+// import 'dart:developer';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:http/http.dart' as http;
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/model/news_model.dart';
+import 'package:news_app_project_1/widgets/empty_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../inner_screen/search_screen.dart';
+import '../services/news_api.dart';
 import '../services/utils.dart';
 import '../widgets/article_widget.dart';
 import '../widgets/drawer.dart';
+import '../widgets/loading_shimmer.dart';
 import '../widgets/tabs.dart';
 import '../widgets/top_trending.dart';
 
@@ -24,6 +31,17 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
 
   String sortBy = SortByEnum.publishedAt.name;
+
+  @override
+  void didChangeDependencies() {
+    getNewsList();
+    super.didChangeDependencies();
+  }
+
+  Future<List<NewsModel>> getNewsList() async {
+    List<NewsModel> newsList = await NewsApiServices.getAllNews();
+    return newsList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,29 +213,53 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-            const SizedBox(height: 6),
-            if (newsTabsRef == NewsTabType.allNews)
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 20,
-                  itemBuilder: (ctx, index) {
-                    return const CardListWidget();
-                  },
-                ),
-              ),
-            if (newsTabsRef == NewsTabType.topTrending)
-              SizedBox(
-                height: size.height * .55,
-                child: Swiper(
-                  itemWidth: size.width * .85,
-                  layout: SwiperLayout.STACK,
-                  viewportFraction: 0.9,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return const TopTrendingWidget();
-                  },
-                ),
-              ),
+            // const SizedBox(height: 6),
+
+            FutureBuilder<List<NewsModel>>(
+              future: getNewsList(),
+              builder: ((context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  Expanded(
+                      child: Flexible(
+                          child: LoadingWidget(newsTabsRef: newsTabsRef)));
+                } else if (snapshot.hasError) {
+                  return Expanded(
+                      child: EmptyScreenWidget(
+                    text: 'an error occured: ${snapshot.error}',
+                    imagePath: 'assets/no_news.png',
+                  ));
+                } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                  return const Expanded(
+                      child: EmptyScreenWidget(
+                    text: 'no data found',
+                    imagePath: 'assets/no_news.png',
+                  ));
+                }
+                return newsTabsRef == NewsTabType.allNews
+                    ? Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (ctx, index) {
+                            return ArticlesWidget(
+                              imageUrl: snapshot.data![index].urlToImage,
+                            );
+                          },
+                        ),
+                      )
+                    : SizedBox(
+                        height: size.height * .55,
+                        child: Swiper(
+                          itemWidth: size.width * .85,
+                          layout: SwiperLayout.STACK,
+                          viewportFraction: 0.9,
+                          itemCount: 10,
+                          itemBuilder: (context, index) {
+                            return const TopTrendingWidget();
+                          },
+                        ),
+                      );
+              }),
+            )
             // LoadingWidget( newsTabsRef: newsTabsRef,),
           ],
         ),
