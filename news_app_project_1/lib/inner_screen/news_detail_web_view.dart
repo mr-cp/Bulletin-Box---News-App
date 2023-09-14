@@ -8,8 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetailsWebView extends StatefulWidget {
-  const NewsDetailsWebView({super.key});
-
+  const NewsDetailsWebView({super.key, required this.url});
+  final String url;
   @override
   State<NewsDetailsWebView> createState() => _NewsDetailsWebViewState();
 }
@@ -17,7 +17,7 @@ class NewsDetailsWebView extends StatefulWidget {
 class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
   late WebViewController webViewController;
   double _progress = 0.0;
-  final url = 'https://www.newslink.com/ourwork/';
+
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
@@ -36,7 +36,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 0,
           title: Text(
-            'URL',
+            widget.url,
             style: TextStyle(color: color),
           ),
           actions: [
@@ -58,7 +58,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
               child: WebView(
                 initialUrl:
                     // "https://techcrunch.com/2022/06/17/marc-lores-food-delivery-startup-wonder-raises-350m-3-5b-valuation/",
-                    url,
+                    widget.url,
                 zoomEnabled: true,
                 onProgress: (progress) {
                   setState(() {
@@ -116,8 +116,7 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
               ListTile(
                 onTap: () async {
                   try {
-                     Share.share('url',
-                        subject: 'short news from BB News');
+                    Share.share('"/${widget.url}"', subject: 'short news from BB News');
                   } catch (err) {
                     await GlobalMethod.errDialogue(
                         errorMessage: 'Error: $err', context: context);
@@ -132,8 +131,8 @@ class _NewsDetailsWebViewState extends State<NewsDetailsWebView> {
               const SizedBox(height: 25),
               ListTile(
                 onTap: () async {
-                  if (!await launchUrl(Uri.parse(url))) {
-                    throw Exception('Could not launch $url');
+                  if (!await launchUrl(Uri.parse(widget.url))) {
+                    throw Exception('Could not launch ${widget.url}');
                   }
                 },
                 leading: const Icon(Icons.link_sharp),

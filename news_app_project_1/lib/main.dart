@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:news_app_project_1/consts/theme_data.dart';
 import 'package:news_app_project_1/inner_screen/blog_details.dart';
 import 'package:news_app_project_1/provider/dark_theme_provider.dart';
@@ -6,7 +7,7 @@ import 'package:news_app_project_1/screen/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  
+   debugPaintSizeEnabled = true;  
   runApp(const MyApp());
 }
 

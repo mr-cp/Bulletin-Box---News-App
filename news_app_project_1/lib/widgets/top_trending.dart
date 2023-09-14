@@ -7,7 +7,8 @@ import 'package:page_transition/page_transition.dart';
 import '../inner_screen/news_detail_web_view.dart';
 
 class TopTrendingWidget extends StatelessWidget {
-  const TopTrendingWidget({super.key});
+  const TopTrendingWidget({super.key, required this.url});
+  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,7 @@ class TopTrendingWidget extends StatelessWidget {
                               duration: const Duration(
                                 milliseconds: 450,
                               ),
-                              child: const NewsDetailsWebView(),
+                              child:  NewsDetailsWebView(url: url),
                               inheritTheme: true,
                               ctx: context),
                         );

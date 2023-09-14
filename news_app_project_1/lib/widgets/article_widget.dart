@@ -8,9 +8,9 @@ import 'package:page_transition/page_transition.dart';
 class ArticlesWidget extends StatelessWidget {
   const ArticlesWidget({
     super.key,
-    required this.imageUrl,
+    required this.imageUrl, required this.title, required this.url, required this.dateToShow, required this.readingTime
   });
-  final String imageUrl;
+  final String imageUrl, title, url, dateToShow, readingTime;
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
@@ -93,7 +93,7 @@ class ArticlesWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'title ' * 30,
+                              title,
                               textAlign: TextAlign.justify,
                               maxLines: 3,
                               style: smallTextStyle,
@@ -103,7 +103,7 @@ class ArticlesWidget extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                '⌛ Reading Time',
+                                '⌛ $readingTime',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: smallTextStyle,
@@ -131,7 +131,7 @@ class ArticlesWidget extends StatelessWidget {
                                             duration: const Duration(
                                               milliseconds: 450,
                                             ),
-                                            child: const NewsDetailsWebView(),
+                                            child:  NewsDetailsWebView(url: url),
                                             inheritTheme: true,
                                             ctx: context),
                                       );
@@ -140,7 +140,7 @@ class ArticlesWidget extends StatelessWidget {
                                     color: Colors.blueAccent,
                                   ),
                                   Text(
-                                    '25/08/2023,  10:31 PM',
+                                    dateToShow,
                                     style: smallTextStyle,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

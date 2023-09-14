@@ -32,16 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String sortBy = SortByEnum.publishedAt.name;
 
-  @override
-  void didChangeDependencies() {
-    getNewsList();
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   getNewsList();
+  //   super.didChangeDependencies();
+  // }
 
-  Future<List<NewsModel>> getNewsList() async {
-    List<NewsModel> newsList = await NewsApiServices.getAllNews();
-    return newsList;
-  }
+  // Future<List<NewsModel>> getNewsList() async {
+  //   List<NewsModel> newsList = await 
+  //   return newsList;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(17.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -213,15 +214,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-            // const SizedBox(height: 6),
-
+            const SizedBox(height: 6),
+        
             FutureBuilder<List<NewsModel>>(
-              future: getNewsList(),
+              future: NewsApiServices.getAllNews(),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  Expanded(
-                      child: Flexible(
-                          child: LoadingWidget(newsTabsRef: newsTabsRef)));
+                  LoadingWidget(newsTabsRef: newsTabsRef);
                 } else if (snapshot.hasError) {
                   return Expanded(
                       child: EmptyScreenWidget(
@@ -241,6 +240,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (ctx, index) {
                             return ArticlesWidget(
+                              title: snapshot.data![index].title,
+                              url: snapshot.data![index].url,
+                              dateToShow: snapshot.data![index].dateToShow,
+                              readingTime:
+                                  snapshot.data![index].readingTimeText,
                               imageUrl: snapshot.data![index].urlToImage,
                             );
                           },
@@ -254,7 +258,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           viewportFraction: 0.9,
                           itemCount: 10,
                           itemBuilder: (context, index) {
-                            return const TopTrendingWidget();
+                            return TopTrendingWidget(url: snapshot.data![index].url,
+                              
+                            );
                           },
                         ),
                       );
