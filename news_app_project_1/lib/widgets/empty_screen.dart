@@ -22,8 +22,8 @@ class EmptyScreenWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(imagePath),
           ),
-          Align(
-            alignment: Alignment.center,
+          Center(
+            // alignment: Alignment.center,
             child: Text(
               text,
               

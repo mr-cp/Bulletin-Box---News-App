@@ -1,7 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:news_app_project_1/services/global_method.dart';
 import 'package:reading_time/reading_time.dart';
 
-class NewsModel {
+class NewsModel with ChangeNotifier {
   String newsId,
       sourceName,
       authorName,

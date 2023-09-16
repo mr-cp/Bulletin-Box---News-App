@@ -7,11 +7,12 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:http/http.dart' as http;
 import 'package:news_app_project_1/consts/enum_vars.dart';
 import 'package:news_app_project_1/model/news_model.dart';
+import 'package:news_app_project_1/provider/news_provider.dart';
 import 'package:news_app_project_1/widgets/empty_screen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 import '../inner_screen/search_screen.dart';
-import '../services/news_api.dart';
 import '../services/utils.dart';
 import '../widgets/article_widget.dart';
 import '../widgets/drawer.dart';
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   // Future<List<NewsModel>> getNewsList() async {
-  //   List<NewsModel> newsList = await 
+  //   List<NewsModel> newsList = await
   //   return newsList;
   // }
 
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final Color color = Utils(context).getColor;
     final size = Utils(context).getScreenSize;
-
+    final newsProvider = Provider.of<NewsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: color),
@@ -108,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                   },
                 ),
-                const SizedBox(width: 15),
+                const SizedBox(width: 5),
                 NewsTabsWidget(
                   title: 'Top Trending',
                   color: newsTabsRef == NewsTabType.topTrending
@@ -126,9 +127,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   },
                 ),
+                const Spacer(),
+                newsTabsRef == NewsTabType.topTrending
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Material(
+                            color: Theme.of(context).cardColor,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: DropdownButton(
+                                value: sortBy,
+                                items: dropDownItem,
+                                onChanged: (String? value) {
+                                  setState(() {
+                                    sortBy = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
               ],
             ),
-            const SizedBox(height: 15),
+
+            const SizedBox(height: 10),
             newsTabsRef == NewsTabType.topTrending
                 ? Container()
                 : SizedBox(
@@ -195,57 +222,54 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-            newsTabsRef == NewsTabType.topTrending
-                ? Container()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Align(
-                      alignment: Alignment.topRight,
-                      child: Material(
-                        color: Theme.of(context).cardColor,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: DropdownButton(
-                            value: sortBy,
-                            items: dropDownItem,
-                            onChanged: (String? value) {},
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-            const SizedBox(height: 6),
-        
+
+            const SizedBox(height: 10),
+
             FutureBuilder<List<NewsModel>>(
-              future: NewsApiServices.getAllNews(),
+              future: newsProvider.fetchNewsList(
+                  pageIndex: currentPageIndex + 1, sortBy: sortBy),
               builder: ((context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  LoadingWidget(newsTabsRef: newsTabsRef);
+                  return (newsTabsRef == NewsTabType.allNews)
+                      ? LoadingWidget(newsTabsRef: newsTabsRef)
+                      : Expanded(
+                          child: LoadingWidget(newsTabsRef: newsTabsRef));
                 } else if (snapshot.hasError) {
-                  return Expanded(
-                      child: EmptyScreenWidget(
-                    text: 'an error occured: ${snapshot.error}',
-                    imagePath: 'assets/no_news.png',
-                  ));
+                  return Align(
+                    alignment: Alignment.center,
+                    child: Expanded(
+                        child: EmptyScreenWidget(
+                      text: 'an error occured: ${snapshot.error}',
+                      imagePath: 'assets/no_news.png',
+                    )),
+                  );
                 } else if (snapshot.data == null || snapshot.data!.isEmpty) {
                   return const Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
                       child: EmptyScreenWidget(
-                    text: 'no data found',
-                    imagePath: 'assets/no_news.png',
-                  ));
+                        text: 'no data found',
+                        imagePath: 'assets/no_news.png',
+                      ),
+                    ),
+                  );
                 }
                 return newsTabsRef == NewsTabType.allNews
                     ? Expanded(
                         child: ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (ctx, index) {
-                            return ArticlesWidget(
-                              title: snapshot.data![index].title,
-                              url: snapshot.data![index].url,
-                              dateToShow: snapshot.data![index].dateToShow,
-                              readingTime:
-                                  snapshot.data![index].readingTimeText,
-                              imageUrl: snapshot.data![index].urlToImage,
+                            return ChangeNotifierProvider.value(
+                              value: snapshot.data![index],
+                              child: const ArticlesWidget(
+
+                                  // title: snapshot.data![index].title,
+                                  // url: snapshot.data![index].url,
+                                  // dateToShow: snapshot.data![index].dateToShow,
+                                  // readingTime:
+                                  //     snapshot.data![index].readingTimeText,
+                                  // imageUrl: snapshot.data![index].urlToImage,
+                                  ),
                             );
                           },
                         ),
@@ -258,8 +282,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           viewportFraction: 0.9,
                           itemCount: 10,
                           itemBuilder: (context, index) {
-                            return TopTrendingWidget(url: snapshot.data![index].url,
-                              
+                            return TopTrendingWidget(
+                              url: snapshot.data![index].url,
                             );
                           },
                         ),

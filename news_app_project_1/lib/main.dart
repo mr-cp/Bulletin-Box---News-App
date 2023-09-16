@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:news_app_project_1/consts/theme_data.dart';
 import 'package:news_app_project_1/inner_screen/blog_details.dart';
 import 'package:news_app_project_1/provider/dark_theme_provider.dart';
+import 'package:news_app_project_1/provider/news_provider.dart';
 import 'package:news_app_project_1/screen/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-   debugPaintSizeEnabled = true;  
+  //  debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
@@ -41,7 +41,8 @@ class _MyAppState extends State<MyApp> {
           create: (_) {
             return themeChangeProvider;
           },
-        )
+        ),
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
       ],
       child: Consumer<DarkThemeProvider>(
         builder: (builder, themeProvider, child) {
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const HomeScreen(),
             routes: {
-              NewsDetailScreen.routeName: (ctx) =>  const NewsDetailScreen(),
+              NewsDetailScreen.routeName: (ctx) => const NewsDetailScreen(),
             },
           );
         },
@@ -59,6 +60,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-
-

@@ -2,17 +2,17 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
 import 'package:news_app_project_1/inner_screen/news_detail_web_view.dart';
+import 'package:news_app_project_1/model/news_model.dart';
 import 'package:news_app_project_1/services/utils.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class ArticlesWidget extends StatelessWidget {
-  const ArticlesWidget({
-    super.key,
-    required this.imageUrl, required this.title, required this.url, required this.dateToShow, required this.readingTime
-  });
-  final String imageUrl, title, url, dateToShow, readingTime;
+  const ArticlesWidget({super.key});
+  // final String imageUrl, title, url, dateToShow, readingTime;
   @override
   Widget build(BuildContext context) {
+    final newsModelProvider = Provider.of<NewsModel>(context);
     Size size = Utils(context).getScreenSize;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -76,11 +76,11 @@ class ArticlesWidget extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: FancyShimmerImage(
-                        height: size.height * .10,
-                        width: size.width * .20,
+                        height: size.height * .13,
+                        width: size.width * .215,
                         boxFit: BoxFit.fill,
                         errorWidget: Image.asset('assets/empty_image.png'),
-                        imageUrl: imageUrl,
+                        imageUrl: newsModelProvider.urlToImage,
                         //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                       ),
                     ),
@@ -93,7 +93,7 @@ class ArticlesWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              title,
+                              newsModelProvider.title,
                               textAlign: TextAlign.justify,
                               maxLines: 3,
                               style: smallTextStyle,
@@ -103,7 +103,7 @@ class ArticlesWidget extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                '⌛ $readingTime',
+                                '⌛ ${newsModelProvider.readingTimeText}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: smallTextStyle,
@@ -131,7 +131,7 @@ class ArticlesWidget extends StatelessWidget {
                                             duration: const Duration(
                                               milliseconds: 450,
                                             ),
-                                            child:  NewsDetailsWebView(url: url),
+                                            child:  NewsDetailsWebView(url: newsModelProvider.url),
                                             inheritTheme: true,
                                             ctx: context),
                                       );
@@ -140,7 +140,7 @@ class ArticlesWidget extends StatelessWidget {
                                     color: Colors.blueAccent,
                                   ),
                                   Text(
-                                    dateToShow,
+                                    newsModelProvider.dateToShow,
                                     style: smallTextStyle,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
