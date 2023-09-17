@@ -20,7 +20,7 @@ class ArticlesWidget extends StatelessWidget {
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/NewsDetailScreen');
+            Navigator.pushNamed(context, '/NewsDetailScreen',arguments: newsModelProvider.publishedAt);
 
             // Navigator.push(
             //   context,

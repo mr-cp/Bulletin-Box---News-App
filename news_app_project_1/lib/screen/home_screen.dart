@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final Color color = Utils(context).getColor;
     final size = Utils(context).getScreenSize;
     final newsProvider = Provider.of<NewsProvider>(context);

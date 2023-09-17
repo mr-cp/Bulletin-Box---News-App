@@ -5,7 +5,7 @@ import 'package:reading_time/reading_time.dart';
 class NewsModel with ChangeNotifier {
   String newsId,
       sourceName,
-      authorName,
+      author,
       title,
       description,
       url,
@@ -18,7 +18,7 @@ class NewsModel with ChangeNotifier {
   NewsModel({
     required this.newsId,
     required this.sourceName,
-    required this.authorName,
+    required this.author,
     required this.title,
     required this.description,
     required this.url,
@@ -40,7 +40,7 @@ class NewsModel with ChangeNotifier {
     return NewsModel(
       newsId: json["source"]["id"] ?? "",
       sourceName: json["source"]["name"] ?? "",
-      authorName: json["author"] ?? "",
+      author: json["author"] ?? "",
       title: title,
       description: description,
       url: json["url"] ?? "",
@@ -63,7 +63,7 @@ class NewsModel with ChangeNotifier {
     final Map<String, dynamic> data = {};
     data["NewsId"] = newsId;
     data["sourceName"] = sourceName;
-    data["authorName"] = authorName;
+    data["author"] = author;
     data["title"] = title;
     data["description"] = description;
     data["url"] = url;

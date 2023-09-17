@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/provider/news_provider.dart';
 import 'package:news_app_project_1/services/utils.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../services/global_method.dart';
 
 class NewsDetailScreen extends StatefulWidget {
-  
   static const routeName = "/NewsDetailScreen";
   const NewsDetailScreen({super.key});
 
@@ -18,10 +22,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final color = Utils(context).getColor;
+    final newsProvider = Provider.of<NewsProvider>(context);
+    final publishedAt = ModalRoute.of(context)!.settings.arguments as String;
+    final currentNews = newsProvider.findByDate(publishedAt: publishedAt);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'By Author',
+          'By ${currentNews.author}',
           style: TextStyle(
               fontSize: 25, fontWeight: FontWeight.w400, color: color),
         ),
@@ -38,7 +45,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Title' * 10,
+                  currentNews.title,
                   style: TextStyle(
                     fontSize: 35,
                     fontWeight: FontWeight.w600,
@@ -49,8 +56,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('20/08/2023', style: smallTextStyle),
-                    Text('Reading time text', style: smallTextStyle),
+                    Text(currentNews.dateToShow, style: smallTextStyle),
+                    Text(currentNews.readingTimeText, style: smallTextStyle),
                   ],
                 ),
               ],
@@ -66,8 +73,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   child: FancyShimmerImage(
                     boxFit: BoxFit.fill,
                     errorWidget: Image.asset('assets/empty_image.png'),
-                    imageUrl:
-                        "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                    imageUrl:currentNews.urlToImage,
+                        // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                   ),
                 ),
               ),
@@ -79,7 +86,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   child: Row(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: ()async {
+                  try {
+                    Share.share('"/${currentNews.url}"', subject: 'short news from BB News');
+                  } catch (err) {
+                    await GlobalMethod.errDialogue(
+                        errorMessage: 'Error: $err', context: context);
+                  }
+                },
                         child: Card(
                           elevation: 17,
                           shape: const CircleBorder(),
@@ -123,29 +137,29 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15),
-                const TextContent(
-                  label: 'Description',
+                 TextContent(
+                  label: currentNews.description,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
                 const SizedBox(height: 12),
                 TextContent(
-                  label: 'Description ' * 20,
+                  label: currentNews.content,
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
-                const SizedBox(height: 20),
-                const TextContent(
-                  label: 'Content ',
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                const SizedBox(height: 12),
-                TextContent(
-                  label: 'content ' * 20,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                ),
+                // const SizedBox(height: 20),
+                // const TextContent(
+                //   label: 'Content ',
+                //   fontSize: 20,
+                //   fontWeight: FontWeight.bold,
+                // ),
+                // const SizedBox(height: 12),
+                // TextContent(
+                //   label: 'content ' * 20,
+                //   fontSize: 18,
+                //   fontWeight: FontWeight.normal,
+                // ),
               ],
             ),
           )
@@ -169,7 +183,7 @@ class TextContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SelectableText(
       label,
-      textAlign: TextAlign.justify,
+      // textAlign: TextAlign.justify,
       style: GoogleFonts.roboto(fontSize: fontSize, fontWeight: fontWeight),
     );
   }
