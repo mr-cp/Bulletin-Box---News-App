@@ -75,13 +75,16 @@ class ArticlesWidget extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: FancyShimmerImage(
-                        height: size.height * .13,
-                        width: size.width * .215,
-                        boxFit: BoxFit.fill,
-                        errorWidget: Image.asset('assets/empty_image.png'),
-                        imageUrl: newsModelProvider.urlToImage,
-                        //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                      child: Hero(
+                        tag:newsModelProvider.publishedAt,
+                        child: FancyShimmerImage(
+                          height: size.height * .13,
+                          width: size.width * .215,
+                          boxFit: BoxFit.fill,
+                          errorWidget: Image.asset('assets/empty_image.png'),
+                          imageUrl: newsModelProvider.urlToImage,
+                          //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                        ),
                       ),
                     ),
                     // const SizedBox(width: 10),

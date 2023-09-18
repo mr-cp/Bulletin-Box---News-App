@@ -70,11 +70,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
-                  child: FancyShimmerImage(
-                    boxFit: BoxFit.fill,
-                    errorWidget: Image.asset('assets/empty_image.png'),
-                    imageUrl:currentNews.urlToImage,
-                        // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                  child: Hero(
+                    tag: currentNews.publishedAt,
+                    child: FancyShimmerImage(
+                      boxFit: BoxFit.fill,
+                      errorWidget: Image.asset('assets/empty_image.png'),
+                      imageUrl:currentNews.urlToImage,
+                          // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                    ),
                   ),
                 ),
               ),

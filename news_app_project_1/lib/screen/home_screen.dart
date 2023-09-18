@@ -46,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     final Color color = Utils(context).getColor;
     final size = Utils(context).getScreenSize;
     final newsProvider = Provider.of<NewsProvider>(context);
@@ -88,12 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: const DrawerWidget(),
-      body: Padding(
-        padding: const EdgeInsets.all(17.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(17.0),
+            child: Row(
               children: [
                 NewsTabsWidget(
                   title: 'All News',
@@ -155,13 +154,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
               ],
             ),
+          ),
 
-            const SizedBox(height: 10),
-            newsTabsRef == NewsTabType.topTrending
-                ? Container()
-                : SizedBox(
-                    height: kBottomNavigationBarHeight,
-                    // color: Colors.red,
+          const SizedBox(height: 10),
+          newsTabsRef == NewsTabType.topTrending
+              ? Container()
+              : SizedBox(
+                  height: kBottomNavigationBarHeight,
+                  // color: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 17),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -223,46 +225,50 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
+                ),
 
-            const SizedBox(height: 10),
+          const SizedBox(height: 10),
 
-            FutureBuilder<List<NewsModel>>(
-              future: newsProvider.fetchNewsList(
-                  pageIndex: currentPageIndex + 1, sortBy: sortBy),
-              builder: ((context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return (newsTabsRef == NewsTabType.allNews)
-                      ? LoadingWidget(newsTabsRef: newsTabsRef)
-                      : Expanded(
-                          child: LoadingWidget(newsTabsRef: newsTabsRef));
-                } else if (snapshot.hasError) {
-                  return Align(
-                    alignment: Alignment.center,
-                    child: Expanded(
-                        child: EmptyScreenWidget(
-                      text: 'an error occured: ${snapshot.error}',
-                      imagePath: 'assets/no_news.png',
-                    )),
-                  );
-                } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-                  return const Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
+          FutureBuilder<List<NewsModel>>(
+            future: newsTabsRef == NewsTabType.topTrending
+                ? newsProvider.fetchTopHeadLine()
+                : newsProvider.fetchNewsList(
+                    pageIndex: currentPageIndex + 1, sortBy: sortBy),
+            builder: ((context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return (newsTabsRef == NewsTabType.allNews)
+                    ? LoadingWidget(newsTabsRef: newsTabsRef)
+                    : Expanded(child: LoadingWidget(newsTabsRef: newsTabsRef));
+              } else if (snapshot.hasError) {
+                return Align(
+                  alignment: Alignment.center,
+                  child: Expanded(
                       child: EmptyScreenWidget(
-                        text: 'no data found',
-                        imagePath: 'assets/no_news.png',
-                      ),
+                    text: 'an error occured: ${snapshot.error}',
+                    imagePath: 'assets/no_news.png',
+                  )),
+                );
+              } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                return const Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: EmptyScreenWidget(
+                      text: 'no data found',
+                      imagePath: 'assets/no_news.png',
                     ),
-                  );
-                }
-                return newsTabsRef == NewsTabType.allNews
-                    ? Expanded(
-                        child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (ctx, index) {
-                            return ChangeNotifierProvider.value(
-                              value: snapshot.data![index],
-                              child: const ArticlesWidget(
+                  ),
+                );
+              }
+              return newsTabsRef == NewsTabType.allNews
+                  ? Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (ctx, index) {
+                          return ChangeNotifierProvider.value(
+                            value: snapshot.data![index],
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.0),
+                              child: ArticlesWidget(
 
                                   // title: snapshot.data![index].title,
                                   // url: snapshot.data![index].url,
@@ -271,29 +277,32 @@ class _HomeScreenState extends State<HomeScreen> {
                                   //     snapshot.data![index].readingTimeText,
                                   // imageUrl: snapshot.data![index].urlToImage,
                                   ),
-                            );
-                          },
-                        ),
-                      )
-                    : SizedBox(
-                        height: size.height * .55,
-                        child: Swiper(
-                          itemWidth: size.width * .85,
-                          layout: SwiperLayout.STACK,
-                          viewportFraction: 0.9,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return TopTrendingWidget(
-                              url: snapshot.data![index].url,
-                            );
-                          },
-                        ),
-                      );
-              }),
-            )
-            // LoadingWidget( newsTabsRef: newsTabsRef,),
-          ],
-        ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox(
+                      height: size.height * .60,
+                      child: Swiper(
+                        itemWidth: size.width * .85,
+                        layout: SwiperLayout.STACK,
+                        viewportFraction: .9,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return ChangeNotifierProvider.value(
+                            value: snapshot.data![index],
+                            child: const TopTrendingWidget(
+                              // url: snapshot.data![index].url,
+                            ),
+                          );
+                        },
+                      ),
+                    );
+            }),
+          )
+          // LoadingWidget( newsTabsRef: newsTabsRef,),
+        ],
       ),
     );
   }

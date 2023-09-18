@@ -7,6 +7,7 @@ class NewsProvider with ChangeNotifier {
 
   List<NewsModel> get getNewsList => newsList;
 
+//all news:
   Future<List<NewsModel>> fetchNewsList(
       {required int pageIndex, required String sortBy}) async {
     newsList =
@@ -17,5 +18,17 @@ class NewsProvider with ChangeNotifier {
   NewsModel findByDate({required String publishedAt}) {
     return newsList
         .firstWhere((newsModel) => newsModel.publishedAt == publishedAt);
+  }
+
+  //top trending:
+  Future<List<NewsModel>> fetchTopHeadLine() async {
+    newsList = await NewsApiServices.getTopTrending();
+    return newsList;
+  }
+
+  //search news:
+  Future<List<NewsModel>> fetchSearchNews({required String query}) async {
+    newsList = await NewsApiServices.searchNews(query: query);
+    return newsList;
   }
 }
