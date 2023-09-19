@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464440535912",
+    "project_id": "bulletin-box---news-app",
+    "storage_bucket": "bulletin-box---news-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464440535912:android:0deea3b0deb879cfc8c4dd",
+        "android_client_info": {
+          "package_name": "com.example.news_app_project_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfjWqItSvflybuGA3KGMjGKun6iiAZ_lM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
