@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:news_app_project_1/consts/api_const.dart';
 import 'package:news_app_project_1/consts/http_exceptions.dart';
+import 'package:news_app_project_1/model/bookmark_model.dart';
 
 import '../model/news_model.dart';
 
@@ -72,8 +73,7 @@ class NewsApiServices {
 
 // search news:
 
-  static Future<List<NewsModel>> searchNews(
-      {required String query}) async {
+  static Future<List<NewsModel>> searchNews({required String query}) async {
     try {
       var uri = Uri.https(BASEURL, "v2/everything", {
         "q": query,
@@ -97,6 +97,19 @@ class NewsApiServices {
       return NewsModel.newsFromSnapshot(newsTempList);
     } catch (error) {
       throw error.toString();
+    }
+  }
+
+  //bookmark api methods:
+
+  static Future<List<BookmarkModel>?> getBookmarks() async {
+    try {
+      var uri = Uri.https(BASEURL_FIREBASE, "collectionsBookmark.json");
+      var response = await http.get(uri);
+      print("${response.statusCode}");
+      print(response.body);
+    } catch (error) {
+      rethrow;
     }
   }
 }

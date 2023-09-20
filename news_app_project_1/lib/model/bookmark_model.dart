@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:reading_time/reading_time.dart';
-
-import '../services/global_method.dart';
 
 class BookmarkModel with ChangeNotifier {
-  String newsId,
+  String bookmarkKey,
+      newsId,
       sourceName,
       author,
       title,
@@ -17,7 +15,8 @@ class BookmarkModel with ChangeNotifier {
       readingTimeText;
 
   BookmarkModel(
-      {required this.newsId,
+      {required this.bookmarkKey,
+      required this.newsId,
       required this.sourceName,
       required this.author,
       required this.title,
@@ -29,33 +28,29 @@ class BookmarkModel with ChangeNotifier {
       required this.content,
       required this.readingTimeText});
 
-  factory BookmarkModel.fromJson(dynamic json) {
-    String title = json["title"] ?? "";
-    String description = json["description"] ?? "";
-    String content = json["content"] ?? "";
-    String dateToShow = "";
-    if (json["publishedAt"] != null) {
-      dateToShow = GlobalMethod.formattedDateText(json["publishedAt"]);
-    }
+  factory BookmarkModel.fromJson(
+      {required dynamic json, required bookmarkKey}) {
     return BookmarkModel(
+      bookmarkKey: bookmarkKey,
       newsId: json["newsid"] ?? "",
       sourceName: json["source"]["name"] ?? "",
       author: json["author"] ?? "",
-      title: title,
-      description: description,
+      title: json["title"] ?? "",
+      description: json["description"] ?? "",
       url: json["url"] ?? "",
       urlToImage: json["urlToImage"] ??
           "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
-      publishedAt: json["publishedAt"],
-      dateToShow: dateToShow,
-      content: content,
-      readingTimeText: readingTime(title + description + content).msg,
+      publishedAt: json["publishedAt"] ?? "",
+      dateToShow: json["pubdateToShowlishedAt"] ?? "",
+      content: json["content"] ?? "",
+      readingTimeText: json["readingTimeText"] ?? "",
     );
   }
 
-  static List<BookmarkModel> newsFromSnapshot(List newSnapshot) {
-    return newSnapshot.map((json) {
-      return BookmarkModel.fromJson(json);
+  static List<BookmarkModel> bookmarkFromSnapshot(
+      {required dynamic json, required List allKeys}) {
+    return allKeys.map((key) {
+      return BookmarkModel.fromJson(json: json[key], bookmarkKey: key);
     }).toList();
   }
 

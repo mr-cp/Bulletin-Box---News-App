@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/provider/bookmark_provider.dart';
 import 'package:news_app_project_1/provider/news_provider.dart';
 import 'package:news_app_project_1/services/utils.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +20,15 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
+  final bool isBookmarked = false;
   @override
   Widget build(BuildContext context) {
     final color = Utils(context).getColor;
     final newsProvider = Provider.of<NewsProvider>(context);
+    final bookmarkProvider = Provider.of<BookmarkProvider>(context);
     final publishedAt = ModalRoute.of(context)!.settings.arguments as String;
     final currentNews = newsProvider.findByDate(publishedAt: publishedAt);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -75,8 +79,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     child: FancyShimmerImage(
                       boxFit: BoxFit.fill,
                       errorWidget: Image.asset('assets/empty_image.png'),
-                      imageUrl:currentNews.urlToImage,
-                          // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
+                      imageUrl: currentNews.urlToImage,
+                      // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                     ),
                   ),
                 ),
@@ -89,14 +93,15 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   child: Row(
                     children: [
                       GestureDetector(
-                        onTap: ()async {
-                  try {
-                    Share.share('"/${currentNews.url}"', subject: 'short news from BB News');
-                  } catch (err) {
-                    await GlobalMethod.errDialogue(
-                        errorMessage: 'Error: $err', context: context);
-                  }
-                },
+                        onTap: () async {
+                          try {
+                            Share.share('"/${currentNews.url}"',
+                                subject: 'short news from BB News');
+                          } catch (err) {
+                            await GlobalMethod.errDialogue(
+                                errorMessage: 'Error: $err', context: context);
+                          }
+                        },
                         child: Card(
                           elevation: 17,
                           shape: const CircleBorder(),
@@ -112,7 +117,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       ),
                       Positioned(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () async {
+                            if (!isBookmarked) {
+                              await bookmarkProvider.addToBookmark(
+                                  newsModel: currentNews);
+                            } else {
+                              await bookmarkProvider.deleteBookmark();
+                            }
+                          },
                           child: Card(
                             elevation: 17,
                             shape: const CircleBorder(),
@@ -140,7 +152,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15),
-                 TextContent(
+                TextContent(
                   label: currentNews.description,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

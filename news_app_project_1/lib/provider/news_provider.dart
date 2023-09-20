@@ -31,4 +31,5 @@ class NewsProvider with ChangeNotifier {
     newsList = await NewsApiServices.searchNews(query: query);
     return newsList;
   }
+  
 }
