@@ -15,7 +15,7 @@ class BookmarkProvider with ChangeNotifier {
 //get method
 
   Future<List<BookmarkModel>> fetchBookmark() async {
-    bookmarkList = await NewsApiServices.getBookmarks()??[];
+    bookmarkList = await NewsApiServices.getBookmarks() ?? [];
     return bookmarkList;
   }
 
@@ -41,7 +41,7 @@ class BookmarkProvider with ChangeNotifier {
   Future<void> deleteBookmark() async {
     try {
       var uri = Uri.https(
-          BASEURL_FIREBASE, "collectionsBookmark/-NemOoUMRoN1_eRMy_lA.json");
+          BASEURL_FIREBASE, "collectionsBookmark/-Nexk5W0Z1XtgWjetaWc.json");
       var response = await http.delete(uri);
       print("${response.statusCode}");
       print(response.body);

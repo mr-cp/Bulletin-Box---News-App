@@ -1,7 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/provider/bookmark_provider.dart';
 import 'package:news_app_project_1/services/utils.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingWidget extends StatefulWidget {
@@ -25,6 +27,7 @@ class _LoadingWidgetState extends State<LoadingWidget> {
     baseShimmerColor = util.baseShimmerColor;
     highLightShimmerColor = util.highLightShimmerColor;
     widgetShimmerColor = util.widgetShimmerColor;
+    Provider.of<BookmarkProvider>(context, listen: false).fetchBookmark();
     super.didChangeDependencies();
   }
 

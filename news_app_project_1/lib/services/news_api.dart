@@ -106,8 +106,23 @@ class NewsApiServices {
     try {
       var uri = Uri.https(BASEURL_FIREBASE, "collectionsBookmark.json");
       var response = await http.get(uri);
+
       print("${response.statusCode}");
       print(response.body);
+
+      Map data = jsonDecode(response.body);
+      List allKeys = [];
+
+      if (data['code'] != null) {
+        throw HttpException(data['code']);
+      }
+
+      for (String key in data.keys) { 
+        allKeys.add(key);
+      }
+      log("$allKeys");
+
+      return BookmarkModel.bookmarkFromSnapshot(json: data, allKeys: allKeys);
     } catch (error) {
       rethrow;
     }
