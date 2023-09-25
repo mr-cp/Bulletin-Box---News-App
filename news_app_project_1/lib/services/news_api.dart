@@ -104,7 +104,7 @@ class NewsApiServices {
 
   static Future<List<BookmarkModel>?> getBookmarks() async {
     try {
-      var uri = Uri.https(BASEURL_FIREBASE, "collectionsBookmark.json");
+      var uri = Uri.https(BASEURL_FIREBASE, "collections.json");
       var response = await http.get(uri);
 
       print("${response.statusCode}");
@@ -113,7 +113,7 @@ class NewsApiServices {
       Map data = jsonDecode(response.body);
       List allKeys = [];
 
-      if (data['code'] != null) {
+      if (data["code"] == null) {
         throw HttpException(data['code']);
       }
 

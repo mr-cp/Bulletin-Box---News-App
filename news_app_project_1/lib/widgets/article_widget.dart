@@ -2,25 +2,30 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
 import 'package:news_app_project_1/inner_screen/news_detail_web_view.dart';
+import 'package:news_app_project_1/model/bookmark_model.dart';
 import 'package:news_app_project_1/model/news_model.dart';
 import 'package:news_app_project_1/services/utils.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class ArticlesWidget extends StatelessWidget {
-  const ArticlesWidget({super.key});
+  const ArticlesWidget({super.key, this.isBookmark = false});
+  final isBookmark;
   // final String imageUrl, title, url, dateToShow, readingTime;
   @override
   Widget build(BuildContext context) {
-    final newsModelProvider = Provider.of<NewsModel>(context);
     Size size = Utils(context).getScreenSize;
+    dynamic newsModelProvider = isBookmark
+        ? Provider.of<BookmarkModel>(context)
+        : Provider.of<NewsModel>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0),
       child: Material(
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, '/NewsDetailScreen',arguments: newsModelProvider.publishedAt);
+            Navigator.pushNamed(context, '/NewsDetailScreen',
+                arguments: newsModelProvider.publishedAt);
 
             // Navigator.push(
             //   context,
@@ -76,7 +81,7 @@ class ArticlesWidget extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Hero(
-                        tag:newsModelProvider.publishedAt,
+                        tag: newsModelProvider.publishedAt,
                         child: FancyShimmerImage(
                           height: size.height * .13,
                           width: size.width * .215,
@@ -134,7 +139,8 @@ class ArticlesWidget extends StatelessWidget {
                                             duration: const Duration(
                                               milliseconds: 450,
                                             ),
-                                            child:  NewsDetailsWebView(url: newsModelProvider.url),
+                                            child: NewsDetailsWebView(
+                                                url: newsModelProvider.url),
                                             inheritTheme: true,
                                             ctx: context),
                                       );

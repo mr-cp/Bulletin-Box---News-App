@@ -118,11 +118,11 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                       Positioned(
                         child: GestureDetector(
                           onTap: () async {
-                            if (!isBookmarked) {
+                            if (isBookmarked) {
+                              await bookmarkProvider.deleteBookmark();
+                            } else {
                               await bookmarkProvider.addToBookmark(
                                   newsModel: currentNews);
-                            } else {
-                              await bookmarkProvider.deleteBookmark();
                             }
                           },
                           child: Card(
@@ -184,6 +184,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   }
 }
 
+// Text content:
 class TextContent extends StatelessWidget {
   const TextContent(
       {super.key,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/inner_screen/bookmark_screen.dart';
+import 'package:news_app_project_1/screen/home_screen.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   Widget build(BuildContext context) {
     print('drawer working');
     final themeState = Provider.of<DarkThemeProvider>(context);
-    
+
     return Drawer(
       child: Material(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -51,7 +52,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                     style: TextStyle(
                       fontWeight: FontWeight.w100,
                       fontSize: 15,
-                       letterSpacing: 3.5,
+                      letterSpacing: 3.5,
                       // fontStyle: FontStyle.italic,
                     ),
                   ),
@@ -61,23 +62,35 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             const SizedBox(height: 15),
             ListTilesWidget(
               label: 'Home',
-              func: () {},
+              func: () {
+                Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.leftToRightWithFade,
+                      duration: const Duration(
+                        milliseconds: 450,
+                      ),
+                      child: const HomeScreen(),
+                      inheritTheme: true,
+                      ctx: context),
+                );
+              },
               icon: Icons.home,
             ),
             ListTilesWidget(
               label: 'Bookmark',
               func: () {
-                Navigator.push(
-                context,
-                PageTransition(
-                    type: PageTransitionType.leftToRightWithFade,
-                    duration: const Duration(
-                      milliseconds: 450,
-                    ),
-                    child: const BookmarkScreen(),
-                    inheritTheme: true,
-                    ctx: context),
-              );
+                Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                      type: PageTransitionType.leftToRightWithFade,
+                      duration: const Duration(
+                        milliseconds: 450,
+                      ),
+                      child: const BookmarkScreen(),
+                      inheritTheme: true,
+                      ctx: context),
+                );
               },
               icon: Icons.bookmark,
             ),
@@ -100,7 +113,6 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 });
               },
             ),
-          
           ],
         ),
       ),
