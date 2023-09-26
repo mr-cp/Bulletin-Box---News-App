@@ -107,8 +107,8 @@ class NewsApiServices {
       var uri = Uri.https(BASEURL_FIREBASE, "collections.json");
       var response = await http.get(uri);
 
-      print("${response.statusCode}");
-      print(response.body);
+      log("${response.statusCode}");
+      log(response.body);
 
       Map data = jsonDecode(response.body);
       List allKeys = [];

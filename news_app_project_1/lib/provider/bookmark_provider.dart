@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +32,7 @@ class BookmarkProvider with ChangeNotifier {
         ),
       );
       // print("${response.statusCode}");
-      print(response.body);
+      log(response.body);
     } catch (error) {
       rethrow;
     }
@@ -43,8 +44,8 @@ class BookmarkProvider with ChangeNotifier {
       var uri = Uri.https(
           BASEURL_FIREBASE, "collectionsBookmark/-Nf9UPEKnjWt0wnU9IuU.json");
       var response = await http.delete(uri);
-      print("${response.statusCode}");
-      print(response.body);
+      log("${response.statusCode}");
+      log(response.body);
     } catch (error) {
       rethrow;
     }

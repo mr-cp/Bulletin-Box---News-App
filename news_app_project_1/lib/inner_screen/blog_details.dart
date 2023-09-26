@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_app_project_1/consts/enum_vars.dart';
+import 'package:news_app_project_1/model/bookmark_model.dart';
 import 'package:news_app_project_1/provider/bookmark_provider.dart';
 import 'package:news_app_project_1/provider/news_provider.dart';
 import 'package:news_app_project_1/services/utils.dart';
@@ -20,7 +21,30 @@ class NewsDetailScreen extends StatefulWidget {
 }
 
 class _NewsDetailScreenState extends State<NewsDetailScreen> {
-  final bool isBookmarked = false;
+  bool isBookmarked = false;
+
+  String? publishedAt;
+  dynamic currBookmark;
+
+  @override
+  void didChangeDependencies() {
+    publishedAt = ModalRoute.of(context)!.settings.arguments as String;
+    final List<BookmarkModel> bookmarkList =
+        Provider.of<BookmarkProvider>(context).getBookmarkList;
+    if (bookmarkList.isEmpty) {
+      return;
+    }
+    currBookmark = bookmarkList
+        .where((element) => element.publishedAt == publishedAt)
+        .toList();
+    if (currBookmark.isEmpty) {
+      isBookmarked = false;
+    } else {
+      isBookmarked = true;
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Utils(context).getColor;
@@ -133,7 +157,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                               child: Icon(
                                 IconlyLight.bookmark,
                                 size: 28,
-                                color: color,
+                                color: isBookmarked ? Colors.green : color,
                               ),
                             ),
                           ),
