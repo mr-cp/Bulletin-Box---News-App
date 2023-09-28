@@ -80,16 +80,15 @@ class ArticlesWidget extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Hero(
-                        tag: newsModelProvider.publishedAt,
-                        child: FancyShimmerImage(
-                          height: size.height * .13,
-                          width: size.width * .215,
-                          boxFit: BoxFit.fill,
-                          errorWidget: Image.asset('assets/empty_image.png'),
-                          imageUrl: newsModelProvider.urlToImage,
-                          //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
-                        ),
+                      // child: Hero(
+                      //   tag: newsModelProvider.publishedAt,
+                      child: FancyShimmerImage(
+                        height: size.height * .13,
+                        width: size.width * .215,
+                        boxFit: BoxFit.fill,
+                        errorWidget: Image.asset('assets/empty_image.png'),
+                        imageUrl: newsModelProvider.urlToImage,
+                        //"https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                       ),
                     ),
                     // const SizedBox(width: 10),
@@ -140,7 +139,9 @@ class ArticlesWidget extends StatelessWidget {
                                               milliseconds: 450,
                                             ),
                                             child: NewsDetailsWebView(
-                                                url: newsModelProvider.url),
+                                              url: newsModelProvider.url,
+                                              // url: "http://www.thedailyscrumnews.com/?gad=1&https%3A%2F%2Fwww_thedailyscrumnews_com%2F"
+                                            ),
                                             inheritTheme: true,
                                             ctx: context),
                                       );

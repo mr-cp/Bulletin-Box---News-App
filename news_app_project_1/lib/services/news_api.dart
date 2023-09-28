@@ -1,42 +1,47 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:news_app_project_1/consts/api_const.dart';
-import 'package:news_app_project_1/consts/http_exceptions.dart';
-import 'package:news_app_project_1/model/bookmark_model.dart';
 
+import '../consts/api_const.dart';
+import '../model/bookmark_model.dart';
 import '../model/news_model.dart';
 
 class NewsApiServices {
-  //all news:
-
   static Future<List<NewsModel>> getAllNews(
       {required int page, required String sortBy}) async {
+    //
     // var url = Uri.parse(
-    // "https://newsapi.org/v2/everything?q=bitcoin&pageSize=5&apiKey=a46c5b83efb34c7d905a0bb3d9c4b2b6");
+    //     'https://newsapi.org/v2/everything?q=bitcoin&pageSize=5&apiKey=');
+
     try {
       var uri = Uri.https(BASEURL, "v2/everything", {
         "q": "bitcoin",
         "pageSize": "4",
         "domains": "techcrunch.com",
         "page": page.toString(),
-        "sortBy": sortBy,
-        // "apiKey": API_KEY
+        "sortBy": sortBy
+        // "apiKEY": API_KEY
       });
-
-      var response = await http.get(uri, headers: {"X-Api-Key": API_KEY});
-      // print('response status: ${response.statusCode}');
+      var response = await http.get(
+        uri,
+        headers: {"X-Api-key": API_KEY},
+      );
+      // log('NA getAllNews: ${response.statusCode}');
+      // log('NA getAllNews: ${response.body}');
       Map data = jsonDecode(response.body);
       List newsTempList = [];
 
       if (data['code'] != null) {
+        // print('data:$data');
         throw HttpException(data['code']);
+        // throw data['message'];
       }
-
-      for (var v in data['articles']) {
+      for (var v in data["articles"]) {
         newsTempList.add(v);
-        // print(v.toString());
+        // log('newTempList: $v.toString()');
+        // print(data["articles"].length.toString());
       }
       return NewsModel.newsFromSnapshot(newsTempList);
     } catch (error) {
@@ -44,26 +49,27 @@ class NewsApiServices {
     }
   }
 
-  //top trending:
-
+//  top trending news api:
   static Future<List<NewsModel>> getTopTrending() async {
     try {
-      var uri = Uri.https(BASEURL, "v2/top-headlines", {
-        'country': 'us',
-      });
-
-      var response = await http.get(uri, headers: {"X-Api-Key": API_KEY});
-      log('response status: ${response.statusCode}');
+      var uri = Uri.https(BASEURL, "v2/top-headlines", {'country': 'us'});
+      var response = await http.get(
+        uri,
+        headers: {"X-Api-key": API_KEY},
+      );
+      // log('Response status: ${response.statusCode}');
+      // log('Response body: ${response.body}');
       Map data = jsonDecode(response.body);
       List newsTempList = [];
 
       if (data['code'] != null) {
         throw HttpException(data['code']);
+        // throw data['message'];
       }
-
-      for (var v in data['articles']) {
+      for (var v in data["articles"]) {
         newsTempList.add(v);
-        // print(v.toString());
+        // log(v.toString());
+        // print(data["articles"].length.toString());
       }
       return NewsModel.newsFromSnapshot(newsTempList);
     } catch (error) {
@@ -71,7 +77,7 @@ class NewsApiServices {
     }
   }
 
-// search news:
+// //search method:
 
   static Future<List<NewsModel>> searchNews({required String query}) async {
     try {
@@ -80,19 +86,23 @@ class NewsApiServices {
         "pageSize": "10",
         "domains": "techcrunch.com",
       });
-
-      var response = await http.get(uri, headers: {"X-Api-Key": API_KEY});
-      log('response status: ${response.statusCode}');
+      var response = await http.get(
+        uri,
+        headers: {"X-Api-key": API_KEY},
+      );
+      // log('Response status: ${response.statusCode}');
+      // log('Response body: ${response.body}');
       Map data = jsonDecode(response.body);
       List newsTempList = [];
 
       if (data['code'] != null) {
         throw HttpException(data['code']);
+        // throw data['message'];
       }
-
-      for (var v in data['articles']) {
+      for (var v in data["articles"]) {
         newsTempList.add(v);
-        // print(v.toString());
+        // log(v.toString());
+        // print(data["articles"].length.toString());
       }
       return NewsModel.newsFromSnapshot(newsTempList);
     } catch (error) {
@@ -100,29 +110,33 @@ class NewsApiServices {
     }
   }
 
-  //bookmark api methods:
-
+//   //bookmark api methods:
   static Future<List<BookmarkModel>?> getBookmarks() async {
     try {
-      var uri = Uri.https(BASEURL_FIREBASE, "collections.json");
-      var response = await http.get(uri);
-
-      log("${response.statusCode}");
-      log(response.body);
+      var uri = Uri.https(BASEURL_FIREBASE, "bookmarks.json");
+      var response = await http.get(
+        uri,
+      );
+      await Future<void>.delayed(const Duration(seconds: 1));
+      // log('NA getBookmark: ${response.statusCode}');
+      // log('NA getBookmark: ${response.body}');
 
       Map data = jsonDecode(response.body);
       List allKeys = [];
 
-      if (data["code"] == null) {
+      if (data['code'] != null) {
         throw HttpException(data['code']);
+        // throw data['message'];
       }
-
-      for (String key in data.keys) { 
+      for (String key in data.keys) {
         allKeys.add(key);
+        log('NA allKeys $allKeys');
       }
-      log("$allKeys");
-
-      return BookmarkModel.bookmarkFromSnapshot(json: data, allKeys: allKeys);
+      final bookmark =
+          BookmarkModel.bookmarkFromSnapshot(json: json, allKeys: allKeys);
+   
+      log('NA bookmark: $bookmark');
+      return bookmark;
     } catch (error) {
       rethrow;
     }

@@ -283,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     )
                   : SizedBox(
-                      height: size.height * .60,
+                      height: size.height * .70,
                       child: Swiper(
                         itemWidth: size.width * .85,
                         layout: SwiperLayout.STACK,

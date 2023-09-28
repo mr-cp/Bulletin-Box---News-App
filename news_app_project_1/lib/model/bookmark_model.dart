@@ -51,9 +51,9 @@ class BookmarkModel with ChangeNotifier {
   bookmarkFromSnapshot(
       {required dynamic json, required List allKeys}) {
     return allKeys.map((key) {
-      print('process key:$key');
+      // print('process key:$key');
       var bookmark = BookmarkModel.fromJson(json: json[key], bookmarkKey: key);
-      print('bookmark created:$bookmark');
+      // print('bookmark created:$bookmark');
     return bookmark;
     }).toList();
   }

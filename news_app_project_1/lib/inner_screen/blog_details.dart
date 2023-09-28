@@ -98,14 +98,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                 width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 25),
-                  child: Hero(
-                    tag: currentNews.publishedAt,
-                    child: FancyShimmerImage(
-                      boxFit: BoxFit.fill,
-                      errorWidget: Image.asset('assets/empty_image.png'),
-                      imageUrl: currentNews.urlToImage,
-                      // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
-                    ),
+                  // child: Hero(
+                  //   tag: currentNews.publishedAt,
+                  child: FancyShimmerImage(
+                    boxFit: BoxFit.fill,
+                    errorWidget: Image.asset('assets/empty_image.png'),
+                    imageUrl: currentNews.urlToImage,
+                    // "https://techcrunch.com/wp-content/uploads/2022/01/locket-app.jpg?w=1390&crop=1",
                   ),
                 ),
               ),
@@ -143,19 +142,24 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                         child: GestureDetector(
                           onTap: () async {
                             if (isBookmarked) {
-                              await bookmarkProvider.deleteBookmark();
+                              await bookmarkProvider.deleteBookmark(
+                                  key: currBookmark[0].bookmarkKey);
                             } else {
                               await bookmarkProvider.addToBookmark(
-                                  newsModel: currentNews);
+                                newsModel: currentNews,
+                              );
                             }
+                            await bookmarkProvider.fetchBookmark();
                           },
                           child: Card(
-                            elevation: 17,
+                            elevation: 10,
                             shape: const CircleBorder(),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
-                                IconlyLight.bookmark,
+                                isBookmarked
+                                    ? IconlyBold.bookmark
+                                    : IconlyLight.bookmark,
                                 size: 28,
                                 color: isBookmarked ? Colors.green : color,
                               ),
