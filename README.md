@@ -1,5 +1,4 @@
-
-![Bulletin Box Logo](assets/imgHeader.png)
+![image](https://github.com/mr-cp/Bulletin-Box---News-App/assets/112920670/7d0aa16a-aba0-432c-b616-c8c7c3a1f48b)
 
 
 **🚀 Bulletin Box: Your Personalized News Universe 🌍***
@@ -72,4 +71,5 @@ The Bulletin Box mission is about to embark on another cosmic journey through th
 
 No need for spacesuits—just grab your device, install Bulletin Box, and let's launch together!
 
-[![Download Bulletin Box](download-button.png)](https://github.com/mr-cp/Bulletin-Box---News-App/archive/refs/heads/master.zip)
+![image](https://github.com/mr-cp/Bulletin-Box---News-App/assets/112920670/ac04069f-bc60-406b-9ac0-909fd27c3459)](https://github.com/mr-cp/Bulletin-Box---News-App/archive/refs/heads/master.zip)
+
